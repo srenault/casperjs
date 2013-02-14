@@ -100,7 +100,7 @@ var Tester = function Tester(casper, options) {
         this.testResults.passes.push(success);
         var timeElapsed = new Date() - this.currentTestStartTime;
         this.testResults.passesTime.push(timeElapsed - this.lastAssertTime);
-        this.exporter.addSuccess(fs.absolute(success.file), success.message || success.standard, timeElapsed - this.lastAssertTime);
+        this.exporter.addSuccess(fs.absolute(success.file), success.message || success.standard, timeElapsed - this.lastAssertTime, success);
         this.lastAssertTime = timeElapsed;
     });
 
@@ -113,7 +113,8 @@ var Tester = function Tester(casper, options) {
             failure.message  || failure.standard,
             failure.standard || "test failed",
             failure.type     || "unknown",
-            (timeElapsed - this.lastAssertTime)
+            (timeElapsed - this.lastAssertTime),
+            failure
         );
         this.lastAssertTime = timeElapsed;
         this.testResults.failures.push(failure);
@@ -1119,6 +1120,7 @@ Tester.prototype.saveResults = function saveResults(filepath) {
     //     throw new CasperError(f('Path %s is not writable.', filepath));
     // }
     try {
+        this.exporter.setTestResults(this.testResults);
         fs.write(filepath, this.exporter.getXML(), 'w');
         this.casper.echo(f('Result log stored in %s', filepath), 'INFO', 80);
     } catch (e) {

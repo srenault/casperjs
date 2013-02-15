@@ -100,7 +100,7 @@ var Tester = function Tester(casper, options) {
         this.testResults.passes.push(success);
         var timeElapsed = new Date() - this.currentTestStartTime;
         this.testResults.passesTime.push(timeElapsed - this.lastAssertTime);
-        this.exporter.addSuccess(fs.absolute(success.file), success.message || success.standard, timeElapsed - this.lastAssertTime, success);
+        this.exporter.addSuccess(fs.absolute(success.file), success.message || success.standard, timeElapsed - this.lastAssertTime);
         this.lastAssertTime = timeElapsed;
     });
 
@@ -113,8 +113,7 @@ var Tester = function Tester(casper, options) {
             failure.message  || failure.standard,
             failure.standard || "test failed",
             failure.type     || "unknown",
-            (timeElapsed - this.lastAssertTime),
-            failure
+            (timeElapsed - this.lastAssertTime)
         );
         this.lastAssertTime = timeElapsed;
         this.testResults.failures.push(failure);
